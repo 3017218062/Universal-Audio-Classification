@@ -81,38 +81,6 @@ class FlexibleTqdm(Callback):
         print(self.row)
 
 
-class StochasticWeightAveraging(Callback):
-    def __init__(self, dirpath="checkpoint/", filename="swa", start_epoch=0):
-        super(StochasticWeightAveraging, self).__init__()
-        if not os.path.exists(dirpath):
-            os.makedirs(dirpath)
-        self.name = dirpath + filename
-        if len(filename) > 4 and filename[-4:] != ".pth":
-            self.name += ".pth"
-        self.start_epoch = start_epoch
-
-    def on_epoch_end(self, trainer, module):
-        n = module.current_epoch - self.start_epoch
-        if n == 0:
-            self.swa_weights = module.state_dict()
-        elif n > 0:
-            weights = module.state_dict()
-            for i in self.swa_weights.keys():
-                self.swa_weights[i] = self.swa_weights[i] * n + weights[i]
-                if self.swa_weights[i].dtype == torch.int64:
-                    self.swa_weights[i] //= (n + 1)
-                elif self.swa_weights[i].dtype == torch.float32:
-                    self.swa_weights[i] /= (n + 1)
-                else:
-                    pass
-        else:
-            pass
-
-    def on_fit_end(self, trainer, module):
-        torch.save(self.swa_weights, self.name)
-        module.load_state_dict(self.swa_weights)
-
-
 class LearningCurve(Callback):
     def __init__(self, dirpath="checkpoint/", filename="log", figsize=(12, 4), names=("loss", "acc", "f1")):
         super(LearningCurve, self).__init__()
