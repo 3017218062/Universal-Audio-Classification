@@ -69,7 +69,7 @@ trainer_params = {
     "deterministic": True,  # False
 
     "gradient_clip_val": 0.0,
-    "sync_batchnorm": True,
+    "sync_batchnorm": False,
     # limit and sample
     "limit_train_batches": 1.0,
     "limit_val_batches": 1.0,

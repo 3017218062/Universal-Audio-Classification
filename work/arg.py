@@ -14,6 +14,6 @@ parser.add_argument("-d", "--weight_decay", default=1e-6, type=float)
 parser.add_argument("-f", "--fold", default=0, type=int)
 parser.add_argument("-s", "--smooth", default=0., type=float)
 parser.add_argument("-o", "--ohem", default=1., type=float)
-parser.add_argument("-g", "--gpu", default=1, type=int)
+parser.add_argument("-g", "--gpu", default=0, type=int)
 
 args = parser.parse_args()
